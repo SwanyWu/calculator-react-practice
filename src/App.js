@@ -58,7 +58,7 @@ function reducer(state, { type, payload }) {
         operation: payload.operation,
         currentOperand: null,
       }
-      
+
     case ACTIONS.CLEAR:
       return {}
 
@@ -153,7 +153,8 @@ function App() {
       <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}>
         DEL
       </button>
-      <OperationButton operation="÷" dispatch={dispatch} />
+      {/* OperationButton takes two values(operation,dispatch) */}
+      <OperationButton operation="÷" dispatch={dispatch} /> 
       <DigitButton digit="1" dispatch={dispatch} />
       <DigitButton digit="2" dispatch={dispatch} />
       <DigitButton digit="3" dispatch={dispatch} />
@@ -168,8 +169,7 @@ function App() {
       <OperationButton operation="-" dispatch={dispatch} />
       <DigitButton digit="." dispatch={dispatch} />
       <DigitButton digit="0" dispatch={dispatch} />
-      <button
-        className="span-two"
+      <button className="span-two"
         onClick={() => dispatch({ type: ACTIONS.EVALUATE })}
       >
         =
