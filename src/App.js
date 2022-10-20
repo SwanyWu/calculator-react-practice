@@ -3,12 +3,13 @@ import DigitButton from "./DigitButton"
 import OperationButton from "./OperationButton"
 import "./styles.css"
 
+// used in switch case in reducer function
 export const ACTIONS = {
   ADD_DIGIT: "add-digit",
-  CHOOSE_OPERATION: "choose-operation",
-  CLEAR: "clear",
-  DELETE_DIGIT: "delete-digit",
-  EVALUATE: "evaluate",
+  CHOOSE_OPERATION: "choose-operation", // + - * /
+  CLEAR: "clear", //AC
+  DELETE_DIGIT: "delete-digit", // DEL
+  EVALUATE: "evaluate", // =
 }
 
 function reducer(state, { type, payload }) {
@@ -32,18 +33,17 @@ function reducer(state, { type, payload }) {
         ...state,
         currentOperand: `${state.currentOperand || ""}${payload.digit}`,
       }
+
     case ACTIONS.CHOOSE_OPERATION:
       if (state.currentOperand == null && state.previousOperand == null) {
         return state
       }
-
       if (state.currentOperand == null) {
         return {
           ...state,
           operation: payload.operation,
         }
       }
-
       if (state.previousOperand == null) {
         return {
           ...state,
@@ -52,15 +52,16 @@ function reducer(state, { type, payload }) {
           currentOperand: null,
         }
       }
-
       return {
         ...state,
         previousOperand: evaluate(state),
         operation: payload.operation,
         currentOperand: null,
       }
+      
     case ACTIONS.CLEAR:
       return {}
+
     case ACTIONS.DELETE_DIGIT:
       if (state.overwrite) {
         return {
@@ -73,11 +74,11 @@ function reducer(state, { type, payload }) {
       if (state.currentOperand.length === 1) {
         return { ...state, currentOperand: null }
       }
-
       return {
         ...state,
         currentOperand: state.currentOperand.slice(0, -1),
       }
+
     case ACTIONS.EVALUATE:
       if (
         state.operation == null ||
@@ -86,7 +87,6 @@ function reducer(state, { type, payload }) {
       ) {
         return state
       }
-
       return {
         ...state,
         overwrite: true,
@@ -179,3 +179,35 @@ function App() {
 }
 
 export default App
+
+// below is a simplified fun App(), all onClicks are added later on
+/*
+function App() {
+  const [{ currentOperand, previousOperand, operation }, dispatch] = useReducer(
+    reducer,
+    {}
+  )
+
+  return (
+    <div className="calculator-grid">
+      <div className="output">
+      // {property binding}
+        <div className="previous-operand">{previousOperand} {operation}</div>
+        <div className="current-operand"></div>
+      </div>
+      <button className="span-two">
+        AC
+      </button>
+      <button>
+        DEL
+      </button>
+      <button>/</button>
+      <button>1</button>
+      ...
+      <button>0</button>
+      <button>-</button>
+      <button className="span-two">=</button>
+    </div>
+  )
+}
+*/
